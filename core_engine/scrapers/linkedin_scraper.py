@@ -32,8 +32,8 @@ class LinkedInScraper(BaseScraper):
 
             extracted_data = []
             for card in job_cards[:5]: 
-                title = card.find_element("css selector", ".base-search-card__title").text
-                company = card.find_element("css selector", ".base-search-card__subtitle").text
+                title = card.find_element("css selector", ".base-search-card__title").get_attribute("textContent").strip()
+                company = card.find_element("css selector", ".base-search-card__subtitle").get_attribute("textContent").strip()
                 link = card.find_element("css selector", ".base-card__full-link").get_attribute("href")
                 
                 extracted_data.append({
