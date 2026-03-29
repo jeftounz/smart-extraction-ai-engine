@@ -12,10 +12,10 @@ smart-extraction-ai-engine/
 │   ├── scrapers/          # Motores de Selenium y BeautifulSoup
 │   │   ├── __init__.py
 │   │   ├── base_scraper.py
-│   │   └── engine.py
-│   ├── ai_processor/      # Integración con Gemini API
+│   │   └── linkedin_scraper.py
+│   ├── services/      # Integración con Gemini API
 │   │   ├── __init__.py
-│   │   └── analyzer.py
+│   │   └── gemini_service.py
 │   └── utils/             # Funciones de ayuda (helpers)
 └── tests/                 # Pruebas unitarias
 
