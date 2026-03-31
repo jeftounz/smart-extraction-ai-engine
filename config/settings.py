@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Librerías de terceros
+    # API apps
     'rest_framework',
     'corsheaders',
-    # Tu aplicación
+    # The app
     'core_engine',
+    #JWT
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +81,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'smart_extraction_db',
+        'USER': 'scraper_admin',
+        'PASSWORD': 'admin123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -122,3 +128,23 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # Le indicamos a Django que use nuestro modelo personalizado para la autenticación
 AUTH_USER_MODEL = 'core_engine.CustomUser'
+
+
+# ==========================================
+# CONFIGURACIÓN DE DJANGO REST FRAMEWORK Y JWT
+# ==========================================
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
