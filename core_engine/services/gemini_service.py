@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai # <--- Nueva importación
 from dotenv import load_dotenv
 
 # Cargar las variables del archivo .env
@@ -11,12 +11,10 @@ class GeminiService:
         if not api_key:
             raise ValueError("⚠️ Falta la GEMINI_API_KEY en el archivo .env")
         
-        genai.configure(api_key=api_key)
-        # Usamos el modelo Flash porque es rápido e ideal para procesar texto
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+        # Inicializamos el nuevo Cliente Oficial
+        self.client = genai.Client(api_key=api_key)
 
     def analyze_jobs(self, jobs_list):
-        # Perfil base para el análisis de la IA
         my_profile = """
         - Ingeniero de Sistemas
         - Experiencia en desarrollo móvil con Flutter
@@ -43,14 +41,11 @@ class GeminiService:
 
         try:
             print("🤖 Procesando análisis semántico con Gemini...")
-            response = self.model.generate_content(prompt)
+            # Nueva forma de generar contenido según la documentación 2024/2025
+            response = self.client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt
+            )
             return response.text
         except Exception as e:
             return f"❌ Error conectando con Gemini: {e}"
-
-if __name__ == "__main__":
-    # Prueba rápida del módulo aislado
-    dummy_data = [{'title': 'Full Stack Flutter Developer', 'company': 'Wellbeinn'}]
-    ai = GeminiService()
-    print("\n--- ANÁLISIS DE LA IA ---")
-    print(ai.analyze_jobs(dummy_data))

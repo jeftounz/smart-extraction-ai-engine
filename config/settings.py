@@ -120,3 +120,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# Le indicamos a Django que use nuestro modelo personalizado para la autenticación
+AUTH_USER_MODEL = 'core_engine.CustomUser'
