@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 1. Contenedor de la Base de Datos
+  db:
+    image: postgres:15
+    container_name: smart_db
+    environment:
+      - POSTGRES_DB=smart_extraction_db
+      - POSTGRES_USER=scraper_admin
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  # 2. Contenedor de tu API Django
+  web:
+    build: .
+    container_name: smart_api
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app  # Sincroniza tu código local con el contenedor en tiempo real
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      # Variables de entorno para que Django sepa dónde está PostgreSQL
+      - DB_HOST=db
+      - DB_NAME=smart_extraction_db
+      - DB_USER=scraper_admin
+      - DB_PASSWORD=admin123
+      - DB_PORT=5432
+
+# Definimos un volumen para que los datos de Postgres no se borren al apagar Docker
+volumes:
+  postgres_data:
